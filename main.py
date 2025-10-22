@@ -53,7 +53,7 @@ def clickup_webhook():
 
     # Extract info from payload (depends on ClickUp’s structure)
     event_text = data.get('event', 'Unknown event')
-    task_name = data.get('task', {}).get('name', 'No task name')
+    task_name = data.get('task', {}).get('name', 'No task Name')
 
     # Prepare message
     message = f"🔔 ClickUp Update: {event_text}\nTask: {task_name}"
@@ -70,3 +70,27 @@ if __name__ == '__main__':
     print("✅ ClickUp → Telegram Notifier started!")
     register_clickup_webhook()
     app.run(host='0.0.0.0', port=10000)
+
+# ==========  (5) START APP ==========
+
+import requests
+from datetime import datetime
+
+def send_telegram(task):
+    bot_token = "YOUR_TELEGRAM_BOT_TOKEN"
+    chat_id = "YOUR_CHAT_ID"
+
+    task_name = task.get("name")
+    timestamp_ms = task.get("date_created")
+    date_created = datetime.fromtimestamp(timestamp_ms / 1000).strftime('%Y-%m-%d %H:%M')
+
+    message = f"📌 New Task Created:\n*{task_name}*\n🕒 Created on: {date_created}"
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": message,
+        "parse_mode": "Markdown"
+    }
+
+    requests.post(url, data=payload)
