@@ -1,8 +1,11 @@
 # ✅ ClickUp → Telegram Notifier
 # Flask app that connects ClickUp task updates to Telegram
 
-from flask import Flask, request
+#from flask import Flask, request 
+#import requests
 import requests
+from flask import Flask, request
+
 
 app = Flask(__name__)
 
